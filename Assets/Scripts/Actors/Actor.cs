@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Enums;
+using Assets.Scripts.Items;
 using UnityEngine;
 namespace Assets.Scripts.Actors
 {
@@ -24,6 +25,9 @@ namespace Assets.Scripts.Actors
         [SerializeField]
         private Team _team;
 
+        [SerializeField]
+        private Weapon _weapon;
+
         private GameObject _actorDisplayer;
         private Rigidbody2D _rigidbody2D;
         private LineRenderer _lineRenderer;
@@ -46,6 +50,8 @@ namespace Assets.Scripts.Actors
                 }
                 _isSelected = value;
                 _rigidbody2D.bodyType = _isSelected ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
+                _lineRenderer.SetPosition(1, transform.position);
+                _lineRenderer.SetPosition(0, transform.position);
                 _actorDisplayer.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             }
         }
@@ -94,12 +100,27 @@ namespace Assets.Scripts.Actors
                 _team = value;
             }
         }
+
+        public Weapon Weapon
+        {
+            get
+            {
+                return _weapon;
+            }
+
+            set
+            {
+                _weapon = value;
+            }
+        }
         #endregion
 
+        #region Methods
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _actorDisplayer = transform.GetChild(0).gameObject;
+
             _lineRenderer = _actorDisplayer.GetComponent<LineRenderer>();
 
             _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
@@ -114,6 +135,7 @@ namespace Assets.Scripts.Actors
         public bool GetCommand(Commands command)
         {
             var spd = _speed * Time.deltaTime;
+            _lineRenderer.SetPosition(0, transform.position);
             switch (command)
             {
                 case Commands.Up:
@@ -129,6 +151,7 @@ namespace Assets.Scripts.Actors
                     transform.Translate(Vector2.left * spd);
                     break;
                 case Commands.Shoot:
+                    _weapon.Shoot();
                     break;
             }
             return true;
@@ -145,5 +168,6 @@ namespace Assets.Scripts.Actors
             return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
         }
     }
+    #endregion
 }
 

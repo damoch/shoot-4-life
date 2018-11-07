@@ -65,7 +65,12 @@ namespace Assets.Scripts.Controllers
 
             if (pressedCommand != KeyCode.None)
             {
-                _playableActors.Where(y => y.IsSelected).ToList().ForEach(x => x.GetCommand(_keyCodesToCommands[pressedCommand]));
+                selected.ForEach(x => x.GetCommand(_keyCodesToCommands[pressedCommand]));
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                selected.ForEach(x => x.GetCommand(Commands.Shoot));
             }
         }
     }
