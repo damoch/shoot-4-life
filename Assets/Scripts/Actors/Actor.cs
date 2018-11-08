@@ -26,7 +26,7 @@ namespace Assets.Scripts.Actors
         private Team _team;
 
         [SerializeField]
-        private Weapon _weapon;
+        private GameObject _weaponObject;
 
         private GameObject _actorDisplayer;
         private Rigidbody2D _rigidbody2D;
@@ -78,6 +78,8 @@ namespace Assets.Scripts.Actors
             _isAlive = false;
             _isSelected = false;
             _speed = 0;
+
+            Debug.Log(_name + " Is dead");
         }
 
         public bool IsAlive
@@ -101,23 +103,14 @@ namespace Assets.Scripts.Actors
             }
         }
 
-        public Weapon Weapon
-        {
-            get
-            {
-                return _weapon;
-            }
-
-            set
-            {
-                _weapon = value;
-            }
-        }
+        public Weapon Weapon { get; set; }
         #endregion
 
         #region Methods
         private void Start()
         {
+            Weapon = _weaponObject.GetComponent<Weapon>();
+
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _actorDisplayer = transform.GetChild(0).gameObject;
 
@@ -151,7 +144,7 @@ namespace Assets.Scripts.Actors
                     transform.Translate(Vector2.left * spd);
                     break;
                 case Commands.Shoot:
-                    _weapon.Shoot();
+                    Weapon.Shoot(_actorDisplayer.transform.localRotation);
                     break;
             }
             return true;

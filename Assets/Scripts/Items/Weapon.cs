@@ -53,15 +53,11 @@ namespace Assets.Scripts.Items
             _isCoolingDown = false;
         }
 
-        public void Shoot()
+        public void Shoot(Quaternion direction)
         {
             if (_isCoolingDown) return;
-            Debug.Log("BANG!");
+            Instantiate(_ammunitionObject, transform.position, direction);//change to pooling later on
             _isCoolingDown = true;
-
-
-
-            //change to pooling later on
         }
 
         private void Update()
