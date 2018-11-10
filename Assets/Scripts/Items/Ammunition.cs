@@ -1,18 +1,28 @@
 ﻿using Assets.Scripts.Actors;
+using Assets.Scripts.Enums;
 using UnityEngine;
 
 namespace Assets.Scripts.Items
 {
     public class Ammunition : Item
     {
+        #region Private variables
         [SerializeField]
         private float _speed;
 
         [SerializeField]
         private int _damageValue;
 
-        private float _step;
+        [SerializeField]
+        private AmmunitionType _ammunitionType;
 
+        [SerializeField]
+        private bool _isPenetrator;
+
+        private float _step;
+        #endregion
+
+        #region Accessors
         public float Speed
         {
             get
@@ -39,6 +49,34 @@ namespace Assets.Scripts.Items
             }
         }
 
+        public AmmunitionType AmmunitionType
+        {
+            get
+            {
+                return _ammunitionType;
+            }
+
+            set
+            {
+                _ammunitionType = value;
+            }
+        }
+
+        public bool IsPenetrator
+        {
+            get
+            {
+                return _isPenetrator;
+            }
+
+            set
+            {
+                _isPenetrator = value;
+            }
+        }
+        #endregion
+
+        #region Methods
         private void Update()
         {
             _step = _speed * Time.deltaTime;
@@ -55,7 +93,12 @@ namespace Assets.Scripts.Items
                 actor.HealthPoints -= _damageValue;
             }
 
-            Destroy(gameObject);
+            if (!_isPenetrator)
+            {
+                Destroy(gameObject);
+            }
         }
+
+        #endregion
     }
 }

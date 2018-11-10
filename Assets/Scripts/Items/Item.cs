@@ -4,9 +4,12 @@ namespace Assets.Scripts.Items
 {
     public class Item : MonoBehaviour
     {
+        #region Private variables
         [SerializeField]
         private string _name;
+        #endregion
 
+        #region Accessors
         public string Name
         {
             get
@@ -19,5 +22,6 @@ namespace Assets.Scripts.Items
                 _name = value;
             }
         }
+        #endregion
     }
 }

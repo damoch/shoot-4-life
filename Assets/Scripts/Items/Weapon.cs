@@ -4,6 +4,7 @@ namespace Assets.Scripts.Items
 {
     public class Weapon : Item
     {
+        #region Private variables
         [SerializeField]
         private GameObject _ammunitionObject;
 
@@ -15,7 +16,9 @@ namespace Assets.Scripts.Items
         private float _elapsedSeconds;
 
         private bool _isCoolingDown;
+        #endregion
 
+        #region Accessors
         public Ammunition Ammunition
         {
             get
@@ -41,7 +44,9 @@ namespace Assets.Scripts.Items
                 _cooldownTimeInSeconds = value;
             }
         }
+        #endregion
 
+        #region Methods
         private void Start()
         {
             if(_ammunition == null)
@@ -73,5 +78,6 @@ namespace Assets.Scripts.Items
                 }
             }
         }
+        #endregion
     }
 }
