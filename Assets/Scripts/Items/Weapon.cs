@@ -13,8 +13,11 @@ namespace Assets.Scripts.Items
 
         [SerializeField]
         private float _cooldownTimeInSeconds;
-        private float _elapsedSeconds;
 
+        [SerializeField]
+        private int _nuberOfRounds;
+
+        private float _elapsedSeconds;
         private bool _isCoolingDown;
         #endregion
 
@@ -60,8 +63,9 @@ namespace Assets.Scripts.Items
 
         public void Shoot(Quaternion direction)
         {
-            if (_isCoolingDown) return;
+            if (_isCoolingDown || _nuberOfRounds < 1) return;
             Instantiate(_ammunitionObject, transform.position, direction);//change to pooling later on
+            _nuberOfRounds--;
             _isCoolingDown = true;
         }
 

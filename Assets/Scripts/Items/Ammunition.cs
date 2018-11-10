@@ -19,6 +19,9 @@ namespace Assets.Scripts.Items
         [SerializeField]
         private bool _isPenetrator;
 
+        [SerializeField]
+        private float _meeleAttackLength;
+
         private float _step;
         #endregion
 
@@ -77,8 +80,25 @@ namespace Assets.Scripts.Items
         #endregion
 
         #region Methods
+        private void Start()
+        {
+            if(_ammunitionType == AmmunitionType.Meele)
+            {
+                _speed = 0;
+            }
+        }
+
         private void Update()
         {
+            if(_ammunitionType == AmmunitionType.Meele && _meeleAttackLength > 0)
+            {
+                _meeleAttackLength -= Time.deltaTime;
+                if(_meeleAttackLength <= 0)
+                {
+                    Destroy(gameObject);
+                }
+                return;
+            }
             _step = _speed * Time.deltaTime;
             transform.Translate(Vector2.left * _step);
         }
@@ -88,12 +108,12 @@ namespace Assets.Scripts.Items
             var gObject = collision.gameObject;
 
             var actor = gObject.GetComponent<Actor>();
-            if (actor != null)
+            if (actor != null && actor.IsAlive)
             {
                 actor.HealthPoints -= _damageValue;
             }
 
-            if (!_isPenetrator)
+            if (!_isPenetrator && actor.IsAlive)
             {
                 Destroy(gameObject);
             }
