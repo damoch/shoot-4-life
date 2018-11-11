@@ -58,6 +58,9 @@ MonoBehaviour:
   _ammunition: {fileID: 114567178986359782, guid: abdf960b47583c64080f8852b349c6a7,
     type: 2}
   _cooldownTimeInSeconds: 0.2
+  _nuberOfRounds: 10
+  _magazineCapacity: 5
+  _reloadLength: 5
 --- !u!212 &212962735539609518
 SpriteRenderer:
   m_ObjectHideFlags: 1

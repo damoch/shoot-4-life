@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Enums;
+﻿using System;
+using Assets.Scripts.Enums;
 using Assets.Scripts.Items;
 using UnityEngine;
 namespace Assets.Scripts.Actors
@@ -28,6 +29,12 @@ namespace Assets.Scripts.Actors
         [SerializeField]
         private GameObject _weaponObject;
 
+        [SerializeField]
+        private ActorType _actorType;
+
+        [SerializeField]
+        private Vector2 _targetPosition;
+
         private GameObject _actorDisplayer;
         private Rigidbody2D _rigidbody2D;
         private LineRenderer _lineRenderer;
@@ -44,7 +51,7 @@ namespace Assets.Scripts.Actors
 
             set
             {
-                if (!_isAlive)
+                if (!_isAlive || _actorType != ActorType.Playable)
                 {
                     return;
                 }
@@ -78,8 +85,6 @@ namespace Assets.Scripts.Actors
             _isAlive = false;
             _isSelected = false;
             _speed = 0;
-
-            Debug.Log(_name + " Is dead");
         }
 
         public bool IsAlive
@@ -104,6 +109,19 @@ namespace Assets.Scripts.Actors
         }
 
         public Weapon Weapon { get; set; }
+
+        public ActorType ActorType
+        {
+            get
+            {
+                return _actorType;
+            }
+
+            set
+            {
+                _actorType = value;
+            }
+        }
         #endregion
 
         #region Methods
@@ -115,7 +133,7 @@ namespace Assets.Scripts.Actors
             _actorDisplayer = transform.GetChild(0).gameObject;
 
             _lineRenderer = _actorDisplayer.GetComponent<LineRenderer>();
-
+            _lineRenderer.SetPosition(0, transform.position);
             _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
             _isSelected = false;
 
@@ -127,6 +145,10 @@ namespace Assets.Scripts.Actors
 
         public bool GetCommand(Commands command)
         {
+            if(!_isAlive || !_isSelected || _actorType != ActorType.Playable)
+            {
+                return false;
+            }
             var spd = _speed * Time.deltaTime;
             _lineRenderer.SetPosition(0, transform.position);
             switch (command)
@@ -156,9 +178,32 @@ namespace Assets.Scripts.Actors
             _lineRenderer.SetPosition(1, position);
         }
 
+        public void MoveTowards(Vector2 position)
+        {
+            if(_actorType != ActorType.NonPlayable)
+            {
+                return;
+            }
+            _targetPosition = position;
+        }
+
         private float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
         {
             return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+        }
+
+        private void Update()
+        {
+            if(_actorType != ActorType.NonPlayable)
+            {
+                return;
+            }
+            var spd = Time.deltaTime * _speed;
+            if(_targetPosition != null)
+            {
+                _lineRenderer.SetPosition(0, transform.position);
+                transform.position = Vector2.MoveTowards(transform.position, _targetPosition, spd);
+            }
         }
     }
     #endregion

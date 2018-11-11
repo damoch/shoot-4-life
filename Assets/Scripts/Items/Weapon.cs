@@ -17,8 +17,17 @@ namespace Assets.Scripts.Items
         [SerializeField]
         private int _nuberOfRounds;
 
-        private float _elapsedSeconds;
+        [SerializeField]
+        private int _magazineCapacity;
+
+        [SerializeField]
+        private float _reloadLength;        
+
+        private int _currentMagzineRounds;
+        private float _elapsedCooldownSeconds;
+        private float _elapsedReloadSeconds;
         private bool _isCoolingDown;
+        private bool _isReloading;
         #endregion
 
         #region Accessors
@@ -57,30 +66,60 @@ namespace Assets.Scripts.Items
                 _ammunition = _ammunitionObject.GetComponent<Ammunition>();
             }
 
-            _elapsedSeconds = 0;
+            _elapsedCooldownSeconds = 0;
             _isCoolingDown = false;
+            ReloadWeapon();
         }
 
         public void Shoot(Quaternion direction)
         {
-            if (_isCoolingDown || _nuberOfRounds < 1) return;
+            if (_isCoolingDown || _isReloading || _currentMagzineRounds < 1)
+            {
+                return;
+            }
             Instantiate(_ammunitionObject, transform.position, direction);//change to pooling later on
-            _nuberOfRounds--;
+            _currentMagzineRounds--;
             _isCoolingDown = true;
+            _isReloading = _currentMagzineRounds < 1;
         }
 
         private void Update()
         {
             if (_isCoolingDown)
             {
-                _elapsedSeconds += Time.deltaTime;
+                _elapsedCooldownSeconds += Time.deltaTime;
 
-                if(_elapsedSeconds >= _cooldownTimeInSeconds)
+                if(_elapsedCooldownSeconds >= _cooldownTimeInSeconds)
                 {
-                    _elapsedSeconds = 0;
+                    _elapsedCooldownSeconds = 0;
                     _isCoolingDown = false;
                 }
             }
+
+            if (_isReloading)
+            {
+                _elapsedReloadSeconds += Time.deltaTime;
+
+                if(_elapsedReloadSeconds >= _reloadLength)
+                {
+                    ReloadWeapon();
+                }
+            }
+        }
+
+        private void ReloadWeapon()
+        {
+            _elapsedReloadSeconds = 0;
+            _isReloading = false;
+
+            if(_magazineCapacity > _nuberOfRounds)
+            {
+                _currentMagzineRounds = _nuberOfRounds;
+                _nuberOfRounds = 0;
+                return;
+            }
+            _nuberOfRounds -= _magazineCapacity;
+            _currentMagzineRounds = _magazineCapacity;
         }
         #endregion
     }

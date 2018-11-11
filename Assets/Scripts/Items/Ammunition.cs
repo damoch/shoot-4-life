@@ -108,11 +108,20 @@ namespace Assets.Scripts.Items
             var gObject = collision.gameObject;
 
             var actor = gObject.GetComponent<Actor>();
-            if (actor != null && actor.IsAlive)
+            if (actor != null)
             {
-                actor.HealthPoints -= _damageValue;
+                DealWithActor(actor);
             }
 
+        }
+
+        private void DealWithActor(Actor actor)
+        {
+            if (!actor.IsAlive)
+            {
+                return;
+            }
+            actor.HealthPoints -= _damageValue;
             if (!_isPenetrator && actor.IsAlive)
             {
                 Destroy(gameObject);
