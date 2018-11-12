@@ -6,7 +6,7 @@ using System.Linq;
 namespace Assets.Scripts.Controllers
 {
     [RequireComponent(typeof(Actor))]
-    public class NonPlayableActorController : MonoBehaviour
+    public class NonPlayableZombieActorController : MonoBehaviour
     {
         [SerializeField]
         private Actor _actor;
@@ -20,7 +20,6 @@ namespace Assets.Scripts.Controllers
         {
             _actor = GetComponent<Actor>();
             _actor.Team = _team;
-            _actor.IsSelected = true;
         }
 
         private void Update()
@@ -30,13 +29,23 @@ namespace Assets.Scripts.Controllers
                 return;
             }
 
-            if(_target == null || !_target.IsAlive)
+            if (!_actor.IsSelected)
+            {
+                _actor.IsSelected = true;
+            }
+
+            if (_target == null || !_target.IsAlive)
             {
                 FindNewTarget();
             }
-
+            if (_target == null) return;
             _actor.LookAt(_target.transform.position);
             _actor.MoveTowards(_target.transform.position);
+
+            if(_actor.Weapon.IsAttackPossible(_target.transform.position))
+            {
+                _actor.GetCommand(Commands.Shoot);
+            }
         }
 
         private void FindNewTarget()

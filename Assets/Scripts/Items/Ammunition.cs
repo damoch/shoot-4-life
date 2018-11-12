@@ -22,6 +22,9 @@ namespace Assets.Scripts.Items
         [SerializeField]
         private float _meeleAttackLength;
 
+        [SerializeField]
+        private float _minimumAttackDistance;
+
         private float _step;
         #endregion
 
@@ -75,6 +78,19 @@ namespace Assets.Scripts.Items
             set
             {
                 _isPenetrator = value;
+            }
+        }
+
+        public float MinimumAttackDistance
+        {
+            get
+            {
+                return _minimumAttackDistance;
+            }
+
+            set
+            {
+                _minimumAttackDistance = value;
             }
         }
         #endregion

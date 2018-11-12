@@ -379,6 +379,7 @@ MonoBehaviour:
   _weaponObject: {fileID: 1031766187}
   _actorType: 0
   _targetPosition: {x: 0, y: 0}
+  _isInfected: 0
 --- !u!4 &414558227
 Transform:
   m_ObjectHideFlags: 0
@@ -488,47 +489,47 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1001 &624494172
+--- !u!1001 &745822826
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 1518376073}
     m_Modifications:
-    - target: {fileID: 4700614004393912, guid: 15ac5a9c335614c4290c0151af7b36e5, type: 2}
+    - target: {fileID: 4700614004393912, guid: 4cad282ac073a82458e76c2ec9f888cd, type: 2}
       propertyPath: m_LocalPosition.x
       value: -2
       objectReference: {fileID: 0}
-    - target: {fileID: 4700614004393912, guid: 15ac5a9c335614c4290c0151af7b36e5, type: 2}
+    - target: {fileID: 4700614004393912, guid: 4cad282ac073a82458e76c2ec9f888cd, type: 2}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4700614004393912, guid: 15ac5a9c335614c4290c0151af7b36e5, type: 2}
+    - target: {fileID: 4700614004393912, guid: 4cad282ac073a82458e76c2ec9f888cd, type: 2}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4700614004393912, guid: 15ac5a9c335614c4290c0151af7b36e5, type: 2}
+    - target: {fileID: 4700614004393912, guid: 4cad282ac073a82458e76c2ec9f888cd, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4700614004393912, guid: 15ac5a9c335614c4290c0151af7b36e5, type: 2}
+    - target: {fileID: 4700614004393912, guid: 4cad282ac073a82458e76c2ec9f888cd, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4700614004393912, guid: 15ac5a9c335614c4290c0151af7b36e5, type: 2}
+    - target: {fileID: 4700614004393912, guid: 4cad282ac073a82458e76c2ec9f888cd, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4700614004393912, guid: 15ac5a9c335614c4290c0151af7b36e5, type: 2}
+    - target: {fileID: 4700614004393912, guid: 4cad282ac073a82458e76c2ec9f888cd, type: 2}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4700614004393912, guid: 15ac5a9c335614c4290c0151af7b36e5, type: 2}
+    - target: {fileID: 4700614004393912, guid: 4cad282ac073a82458e76c2ec9f888cd, type: 2}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 15ac5a9c335614c4290c0151af7b36e5, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: 4cad282ac073a82458e76c2ec9f888cd, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &807413750
 GameObject:
@@ -578,6 +579,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1008167517 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1003248142349624, guid: 4cad282ac073a82458e76c2ec9f888cd,
+    type: 2}
+  m_PrefabInternal: {fileID: 745822826}
+--- !u!4 &1008167520 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4700614004393912, guid: 4cad282ac073a82458e76c2ec9f888cd,
+    type: 2}
+  m_PrefabInternal: {fileID: 745822826}
 --- !u!1001 &1027295041
 Prefab:
   m_ObjectHideFlags: 0
@@ -883,7 +894,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1715120304}
+  - {fileID: 1008167520}
   m_Father: {fileID: 1707968847}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1270,15 +1281,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175c091aea8a22b498722c357796db11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isSelected: 0
+  _isSelected: 1
   _healthPoints: 100
   _isAlive: 1
   _speed: 1
   _name: Zombie
   _team: 0
-  _weaponObject: {fileID: 1715120301}
+  _weaponObject: {fileID: 1008167517}
   _actorType: 1
   _targetPosition: {x: 0, y: 0}
+  _isInfected: 0
 --- !u!4 &1707968847
 Transform:
   m_ObjectHideFlags: 0
@@ -1293,16 +1305,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1715120301 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1003248142349624, guid: 15ac5a9c335614c4290c0151af7b36e5,
-    type: 2}
-  m_PrefabInternal: {fileID: 624494172}
---- !u!4 &1715120304 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4700614004393912, guid: 15ac5a9c335614c4290c0151af7b36e5,
-    type: 2}
-  m_PrefabInternal: {fileID: 624494172}
 --- !u!1001 &1735533618
 Prefab:
   m_ObjectHideFlags: 0
@@ -1479,6 +1481,7 @@ MonoBehaviour:
   _weaponObject: {fileID: 215067488}
   _actorType: 0
   _targetPosition: {x: 0, y: 0}
+  _isInfected: 0
 --- !u!4 &2011338452
 Transform:
   m_ObjectHideFlags: 0

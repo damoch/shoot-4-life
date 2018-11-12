@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Enums;
+using UnityEngine;
 
 namespace Assets.Scripts.Items
 {
@@ -78,8 +79,12 @@ namespace Assets.Scripts.Items
                 return;
             }
             Instantiate(_ammunitionObject, transform.position, direction);//change to pooling later on
-            _currentMagzineRounds--;
             _isCoolingDown = true;
+            if(_ammunition.AmmunitionType == AmmunitionType.Meele)
+            {
+                return;
+            }
+            _currentMagzineRounds--;
             _isReloading = _currentMagzineRounds < 1;
         }
 
@@ -120,6 +125,16 @@ namespace Assets.Scripts.Items
             }
             _nuberOfRounds -= _magazineCapacity;
             _currentMagzineRounds = _magazineCapacity;
+        }
+
+        public bool IsAttackPossible(Vector2 targetPosition)
+        {
+            if(_ammunition.AmmunitionType == AmmunitionType.Projectile)
+            {
+                return true;
+            }
+
+            return Vector2.Distance(transform.position, targetPosition) <= _ammunition.MinimumAttackDistance;
         }
         #endregion
     }

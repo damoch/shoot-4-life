@@ -35,6 +35,9 @@ namespace Assets.Scripts.Actors
         [SerializeField]
         private Vector2 _targetPosition;
 
+        [SerializeField]
+        private bool _isInfected;
+
         private GameObject _actorDisplayer;
         private Rigidbody2D _rigidbody2D;
         private LineRenderer _lineRenderer;
@@ -51,15 +54,26 @@ namespace Assets.Scripts.Actors
 
             set
             {
-                if (!_isAlive || _actorType != ActorType.Playable)
+                if (!_isAlive)
                 {
                     return;
                 }
                 _isSelected = value;
+                if (_rigidbody2D == null)
+                {
+                    _rigidbody2D = GetComponent<Rigidbody2D>();
+                }
                 _rigidbody2D.bodyType = _isSelected ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
-                _lineRenderer.SetPosition(1, transform.position);
-                _lineRenderer.SetPosition(0, transform.position);
-                _actorDisplayer.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+
+                if(_lineRenderer != null)
+                {
+                    _lineRenderer.SetPosition(1, transform.position);
+                    _lineRenderer.SetPosition(0, transform.position);
+                }
+                if(_actorDisplayer != null)
+                {
+                    _actorDisplayer.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                }
             }
         }
 
@@ -122,6 +136,19 @@ namespace Assets.Scripts.Actors
                 _actorType = value;
             }
         }
+
+        public bool IsInfected
+        {
+            get
+            {
+                return _isInfected;
+            }
+
+            set
+            {
+                _isInfected = value;
+            }
+        }
         #endregion
 
         #region Methods
@@ -129,7 +156,10 @@ namespace Assets.Scripts.Actors
         {
             Weapon = _weaponObject.GetComponent<Weapon>();
 
-            _rigidbody2D = GetComponent<Rigidbody2D>();
+            if(_rigidbody2D == null)
+            {
+                _rigidbody2D = GetComponent<Rigidbody2D>();
+            }
             _actorDisplayer = transform.GetChild(0).gameObject;
 
             _lineRenderer = _actorDisplayer.GetComponent<LineRenderer>();
@@ -145,7 +175,7 @@ namespace Assets.Scripts.Actors
 
         public bool GetCommand(Commands command)
         {
-            if(!_isAlive || !_isSelected || _actorType != ActorType.Playable)
+            if(!_isAlive || !_isSelected)
             {
                 return false;
             }
@@ -194,7 +224,7 @@ namespace Assets.Scripts.Actors
 
         private void Update()
         {
-            if(_actorType != ActorType.NonPlayable)
+            if(_actorType != ActorType.NonPlayable || !_isSelected)
             {
                 return;
             }
