@@ -100,11 +100,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Dummy Projecile Ammunition
-  _speed: 40
-  _damageValue: 20
+  _speed: 60
+  _damageValue: 7
   _ammunitionType: 0
   _isPenetrator: 0
   _meeleAttackLength: 0
+  _minimumAttackDistance: 0
 --- !u!212 &212934429583330138
 SpriteRenderer:
   m_ObjectHideFlags: 1

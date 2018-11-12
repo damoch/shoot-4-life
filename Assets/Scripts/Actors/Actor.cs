@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Assets.Scripts.Actors
 {
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(BoxCollider2D))]
     public class Actor : MonoBehaviour
     {
         #region Private variables
@@ -99,6 +100,9 @@ namespace Assets.Scripts.Actors
             _isAlive = false;
             _isSelected = false;
             _speed = 0;
+            _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+            GetComponent<BoxCollider2D>().isTrigger = true;
+            _lineRenderer.SetPositions(new Vector3[] { transform.position, transform.position });
         }
 
         public bool IsAlive
