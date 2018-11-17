@@ -166,7 +166,11 @@ namespace Assets.Scripts.Actors
         private void Start()
         {
             Weapon = _mainWeaponObject?.GetComponent<Weapon>();
-            _secondaryWeaponObject.SetActive(false);
+            if(_secondaryWeaponObject != null)
+            {
+                _secondaryWeaponObject.SetActive(false);
+
+            }
 
             if(_rigidbody2D == null)
             {
@@ -219,6 +223,10 @@ namespace Assets.Scripts.Actors
 
         public void LookAt(Vector2 position)
         {
+            if(_actorDisplayer == null)
+            {
+                return;
+            }
             _actorDisplayer.transform.localRotation = Quaternion.Euler(0f, 0f, AngleBetweenTwoPoints(transform.position, position));
             _lineRenderer.SetPosition(1, position);
         }

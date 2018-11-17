@@ -2,6 +2,7 @@
 using Assets.Scripts.Enums;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace Assets.Scripts.Controllers
 {
@@ -34,11 +35,8 @@ namespace Assets.Scripts.Controllers
                 _actor.IsSelected = true;
             }
 
-            if (_target == null || !_target.IsAlive)
-            {
-                FindNewTarget();
-            }
             if (_target == null) return;
+
             _actor.LookAt(_target.transform.position);
             _actor.MoveTowards(_target.transform.position);
 
@@ -48,9 +46,12 @@ namespace Assets.Scripts.Controllers
             }
         }
 
-        private void FindNewTarget()
+        internal void NotifyAboutNewActorInTheRoom(Actor actor)
         {
-            _target = FindObjectsOfType<Actor>().FirstOrDefault(x => x.Team != _team && x.IsAlive);
+            if(actor.Team != _team)
+            {
+                _target = actor;
+            }
         }
     }
 }

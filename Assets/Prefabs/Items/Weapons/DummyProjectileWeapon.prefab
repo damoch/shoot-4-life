@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f03de8f445f194296e7575d70e7e67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Dummy Projectlie Weapon
+  _name: M4 Rifle
   _ammunitionObject: {fileID: 1243823710616930, guid: abdf960b47583c64080f8852b349c6a7,
     type: 2}
   _ammunition: {fileID: 114567178986359782, guid: abdf960b47583c64080f8852b349c6a7,
@@ -62,7 +62,7 @@ MonoBehaviour:
   _magazineCapacity: 30
   _reloadLength: 5
   _hasRecoil: 1
-  _recoilValueEveryShoot: 2
+  _recoilValueEveryShoot: 1.5
   _decreaseRecoilTime: 1
 --- !u!212 &212962735539609518
 SpriteRenderer:

@@ -57,7 +57,7 @@ MonoBehaviour:
     type: 2}
   _ammunition: {fileID: 114567178986359782, guid: abdf960b47583c64080f8852b349c6a7,
     type: 2}
-  _cooldownTimeInSeconds: 2
+  _cooldownTimeInSeconds: 1
   _nuberOfRounds: 48
   _magazineCapacity: 12
   _reloadLength: 3
