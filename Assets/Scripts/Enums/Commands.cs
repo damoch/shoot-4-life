@@ -2,6 +2,6 @@
 {
     public enum Commands
     {
-        Up, Down, Right, Left, Shoot
+        Up, Down, Right, Left, Shoot, SwapWeapons
     }
 }

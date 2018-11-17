@@ -22,13 +22,24 @@ namespace Assets.Scripts.Items
         private int _magazineCapacity;
 
         [SerializeField]
-        private float _reloadLength;        
+        private float _reloadLength;
+
+        [SerializeField]
+        private bool _hasRecoil;
+
+        [SerializeField]
+        private float _recoilValueEveryShoot;
+
+        [SerializeField]
+        private float _decreaseRecoilTime;
 
         private int _currentMagzineRounds;
         private float _elapsedCooldownSeconds;
         private float _elapsedReloadSeconds;
         private bool _isCoolingDown;
         private bool _isReloading;
+        private float _currentRecoilValue;
+        private float _recoilCooldownTimer;
         #endregion
 
         #region Accessors
@@ -78,7 +89,20 @@ namespace Assets.Scripts.Items
             {
                 return;
             }
-            Instantiate(_ammunitionObject, transform.position, direction);//change to pooling later on
+            Quaternion newDirection;
+
+            if (_hasRecoil)
+            {
+                var randomizer = Random.Range(0, 100) > 50 ? 1 : -1;
+                newDirection = Quaternion.Euler(direction.eulerAngles.x, direction.eulerAngles.y, direction.eulerAngles.z + (_currentRecoilValue * randomizer));
+                _currentRecoilValue += _recoilValueEveryShoot;
+            }
+            else
+            {
+                newDirection = direction;
+            }
+
+            Instantiate(_ammunitionObject, transform.position, newDirection);//change to pooling later on
             _isCoolingDown = true;
             if(_ammunition.AmmunitionType == AmmunitionType.Meele)
             {
@@ -86,6 +110,7 @@ namespace Assets.Scripts.Items
             }
             _currentMagzineRounds--;
             _isReloading = _currentMagzineRounds < 1;
+            _recoilCooldownTimer = 0;
         }
 
         private void Update()
@@ -108,6 +133,16 @@ namespace Assets.Scripts.Items
                 if(_elapsedReloadSeconds >= _reloadLength)
                 {
                     ReloadWeapon();
+                }
+            }
+
+            if(_hasRecoil && _currentRecoilValue > 0)
+            {
+                _recoilCooldownTimer += Time.deltaTime;
+
+                if(_recoilCooldownTimer >= _decreaseRecoilTime)
+                {
+                    _currentRecoilValue = 0;
                 }
             }
         }

@@ -28,7 +28,10 @@ namespace Assets.Scripts.Actors
         private Team _team;
 
         [SerializeField]
-        private GameObject _weaponObject;
+        private GameObject _mainWeaponObject;
+
+        [SerializeField]
+        private GameObject _secondaryWeaponObject;
 
         [SerializeField]
         private ActorType _actorType;
@@ -39,10 +42,14 @@ namespace Assets.Scripts.Actors
         [SerializeField]
         private bool _isInfected;
 
+        [SerializeField]
+        private GameObject _armorObject;
+
+
         private GameObject _actorDisplayer;
         private Rigidbody2D _rigidbody2D;
         private LineRenderer _lineRenderer;
-
+        private Armor _armor;
         #endregion
 
         #region Accesors
@@ -158,7 +165,8 @@ namespace Assets.Scripts.Actors
         #region Methods
         private void Start()
         {
-            Weapon = _weaponObject.GetComponent<Weapon>();
+            Weapon = _mainWeaponObject?.GetComponent<Weapon>();
+            _secondaryWeaponObject.SetActive(false);
 
             if(_rigidbody2D == null)
             {
@@ -202,6 +210,9 @@ namespace Assets.Scripts.Actors
                 case Commands.Shoot:
                     Weapon.Shoot(_actorDisplayer.transform.localRotation);
                     break;
+                case Commands.SwapWeapons:
+                    SwapWeapons();
+                    break;
             }
             return true;
         }
@@ -238,6 +249,43 @@ namespace Assets.Scripts.Actors
                 _lineRenderer.SetPosition(0, transform.position);
                 transform.position = Vector2.MoveTowards(transform.position, _targetPosition, spd);
             }
+        }
+
+        public int GetTimesAttackShouldBeWeaker()
+        {
+            if(_armorObject == null)
+            {
+                return 1;
+            }
+
+            if(_armor == null)
+            {
+                _armor = _armorObject.GetComponent<Armor>();
+            }
+
+            return _armor.DamageDecreaseValue > 0 ? _armor.DamageDecreaseValue : 1; //return 1 to avoid dividing by zero
+        }
+
+        public void SwapWeapons()
+        {
+            if(_secondaryWeaponObject == null)
+            {
+                return;
+            }
+
+            if (_secondaryWeaponObject.activeInHierarchy)
+            {
+                _secondaryWeaponObject.SetActive(false);
+                _mainWeaponObject.SetActive(true);
+                Weapon = _mainWeaponObject.GetComponent<Weapon>();
+            }
+            else
+            {
+                _mainWeaponObject.SetActive(false);
+                _secondaryWeaponObject.SetActive(true);
+                Weapon = _secondaryWeaponObject.GetComponent<Weapon>();
+            }
+            Debug.Log(Weapon.Name);
         }
     }
     #endregion

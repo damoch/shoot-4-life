@@ -137,7 +137,7 @@ namespace Assets.Scripts.Items
             {
                 return;
             }
-            actor.HealthPoints -= _damageValue;
+            actor.HealthPoints -= _damageValue / actor.GetTimesAttackShouldBeWeaker();
             if (!_isPenetrator && actor.IsAlive)
             {
                 Destroy(gameObject);

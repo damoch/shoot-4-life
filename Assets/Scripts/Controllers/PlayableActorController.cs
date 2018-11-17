@@ -26,6 +26,9 @@ namespace Assets.Scripts.Controllers
         private KeyCode _rightKey;
 
         [SerializeField]
+        private KeyCode _swapWeaponsCode;
+
+        [SerializeField]
         private CameraController _cameraController;
 
         private Dictionary<KeyCode, Commands> _keyCodesToCommands;
@@ -42,7 +45,8 @@ namespace Assets.Scripts.Controllers
                 { _upKey, Commands.Up },
                 { _downKey, Commands.Down },
                 { _leftKey, Commands.Left },
-                { _rightKey, Commands.Right }
+                { _rightKey, Commands.Right },
+                { _swapWeaponsCode, Commands.SwapWeapons }
             };
         }
 

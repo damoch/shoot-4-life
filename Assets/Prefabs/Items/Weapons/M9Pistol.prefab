@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114972425406134796}
   - component: {fileID: 212962735539609518}
   m_Layer: 0
-  m_Name: DummyProjectileWeapon
+  m_Name: M9Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,16 +52,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f03de8f445f194296e7575d70e7e67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Dummy Projectlie Weapon
+  _name: M9 Pistol
   _ammunitionObject: {fileID: 1243823710616930, guid: abdf960b47583c64080f8852b349c6a7,
     type: 2}
   _ammunition: {fileID: 114567178986359782, guid: abdf960b47583c64080f8852b349c6a7,
     type: 2}
-  _cooldownTimeInSeconds: 0.1
-  _nuberOfRounds: 60
-  _magazineCapacity: 30
-  _reloadLength: 5
-  _hasRecoil: 1
+  _cooldownTimeInSeconds: 2
+  _nuberOfRounds: 48
+  _magazineCapacity: 12
+  _reloadLength: 3
+  _hasRecoil: 0
   _recoilValueEveryShoot: 2
   _decreaseRecoilTime: 1
 --- !u!212 &212962735539609518
