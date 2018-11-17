@@ -196,7 +196,7 @@ namespace Assets.Scripts.Actors
                 return false;
             }
             var spd = _speed * Time.deltaTime;
-            _lineRenderer.SetPosition(0, transform.position);
+            _lineRenderer.SetPosition(0, Weapon.gameObject.transform.position);
             switch (command)
             {
                 case Commands.Up:
@@ -228,6 +228,7 @@ namespace Assets.Scripts.Actors
                 return;
             }
             _actorDisplayer.transform.localRotation = Quaternion.Euler(0f, 0f, AngleBetweenTwoPoints(transform.position, position));
+            _lineRenderer.SetPosition(0, Weapon.gameObject.transform.position);
             _lineRenderer.SetPosition(1, position);
         }
 
