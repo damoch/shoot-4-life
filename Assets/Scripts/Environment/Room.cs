@@ -12,7 +12,7 @@ namespace Assets.Scripts.Environment
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            var actor = collision.gameObject.GetComponent<Actor>();
+            var actor = collision.gameObject.transform.parent?.GetComponent<Actor>();
             if(actor != null)
             {
                 if(_actorsInRoom == null)
@@ -39,29 +39,29 @@ namespace Assets.Scripts.Environment
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            var actor = collision.gameObject.GetComponent<Actor>();
-            if (actor != null)
-            {
-                if (_actorsInRoom == null)
-                {
-                    _actorsInRoom = new List<Actor>();
-                    return;
-                }
-                //_actorsInRoom.ForEach(x => x.NewActorInCurrentRoom(actor));
-                //foreach (var act in _actorsInRoom)
-                //{
-                //    if (act.ActorType == Enums.ActorType.Playable)
-                //    {
-                //        continue;
-                //    }
+            var actor = collision.gameObject.transform.parent?.GetComponent<Actor>();
+            //if (actor != null)
+            //{
+            //    if (_actorsInRoom == null)
+            //    {
+            //        _actorsInRoom = new List<Actor>();
+            //        return;
+            //    }
+            //    //_actorsInRoom.ForEach(x => x.NewActorInCurrentRoom(actor));
+            //    foreach (var act in _actorsInRoom)
+            //    {
+            //        if (act.ActorType == Enums.ActorType.Playable)
+            //        {
+            //            continue;
+            //        }
 
-                //    var actorController = act.gameObject.GetComponent<NonPlayableZombieActorController>();
-                //    actorController.NotifyAboutNewActorInTheRoom(actor);
-                //}
+            //        var actorController = act.gameObject.GetComponent<NonPlayableZombieActorController>();
+            //        actorController.NotifyAboutNewActorInTheRoom(actor);
+            //    }
 
-                _actorsInRoom.Remove(actor);
-                return;
-            }
+            //    _actorsInRoom.Remove(actor);
+            //    return;
+            //}
         }
     }
 }

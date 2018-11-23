@@ -61,7 +61,7 @@ MonoBehaviour:
   _nuberOfRounds: 60
   _magazineCapacity: 30
   _reloadLength: 5
-  _hasRecoil: 1
+  _hasRecoil: 0
   _recoilValueEveryShoot: 1.5
   _decreaseRecoilTime: 1
 --- !u!212 &212962735539609518

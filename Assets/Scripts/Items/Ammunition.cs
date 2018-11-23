@@ -123,7 +123,7 @@ namespace Assets.Scripts.Items
         {
             var gObject = collision.gameObject;
 
-            var actor = gObject.GetComponent<Actor>();
+            var actor = gObject.transform.parent?.GetComponent<Actor>();
             if (actor != null)
             {
                 DealWithActor(actor);
