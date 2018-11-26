@@ -209,6 +209,7 @@ MonoBehaviour:
   _targetPosition: {x: 0, y: 0}
   _isInfected: 0
   _armorObject: {fileID: 819383076}
+  _weaponSwapLength: 0
 --- !u!4 &414558227
 Transform:
   m_ObjectHideFlags: 0
@@ -504,6 +505,7 @@ MonoBehaviour:
   _leftKey: 97
   _rightKey: 100
   _swapWeaponsCode: 113
+  _aimWeaponButton: 304
   _cameraController: {fileID: 1956312868}
 --- !u!4 &807413752
 Transform:
@@ -558,6 +560,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8840778, y: 1.7505782}
   m_EdgeRadius: 0
+--- !u!114 &910365715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 910365709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6b76c8730f67444ea0fa52402c57f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1027295041
 Prefab:
   m_ObjectHideFlags: 0
@@ -636,6 +649,10 @@ Prefab:
     - target: {fileID: 22444964, guid: 74c24aa9779d1454eb01da0b232432ab, type: 2}
       propertyPath: m_Pivot.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 163538, guid: 74c24aa9779d1454eb01da0b232432ab, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 74c24aa9779d1454eb01da0b232432ab, type: 2}
@@ -791,6 +808,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 188360, guid: 61f00a819c0a5a546b7eea7a104470d7, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 61f00a819c0a5a546b7eea7a104470d7, type: 2}
   m_IsPrefabParent: 0
@@ -824,6 +845,34 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8840778, y: 1.7505782}
   m_EdgeRadius: 0
+--- !u!114 &1555415704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1555415699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6b76c8730f67444ea0fa52402c57f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &1555415705
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1555415699}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &1581258137
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,6 +885,7 @@ GameObject:
   - component: {fileID: 1581258140}
   - component: {fileID: 1581258141}
   - component: {fileID: 1581258142}
+  - component: {fileID: 1581258143}
   m_Layer: 0
   m_Name: ActorDisplayer
   m_TagString: Untagged
@@ -1033,6 +1083,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8840778, y: 1.7505782}
   m_EdgeRadius: 0
+--- !u!114 &1581258143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1581258137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6b76c8730f67444ea0fa52402c57f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1685980127
 GameObject:
   m_ObjectHideFlags: 0

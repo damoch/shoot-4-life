@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Items;
 using UnityEngine;
 namespace Assets.Scripts.Actors
 {
-    [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(BoxCollider2D))]
+    [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D))]
     public class Actor : MonoBehaviour
     {
         #region Private variables
@@ -45,11 +45,19 @@ namespace Assets.Scripts.Actors
         [SerializeField]
         private GameObject _armorObject;
 
+        [SerializeField]
+        private float _weaponSwapLength;
+
 
         private GameObject _actorDisplayer;
         private Rigidbody2D _rigidbody2D;
         private LineRenderer _lineRenderer;
         private Armor _armor;
+        private float _weaponSwapPassed;
+        private bool _isSwapingWeapons;
+        private Dictionary<Commands, Vector2> _commandToDirection;
+        private ActorDisplayerController _actorDisplayerController;
+        private bool _isAnimatingFrame;
         #endregion
 
         #region Accesors
@@ -102,15 +110,6 @@ namespace Assets.Scripts.Actors
             }
         }
 
-        private void KillActor()
-        {
-            _isAlive = false;
-            _isSelected = false;
-            _speed = 0;
-            _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-            GetComponent<BoxCollider2D>().isTrigger = true;
-            _lineRenderer.SetPositions(new Vector3[] { transform.position, transform.position });
-        }
 
         public bool IsAlive
         {
@@ -165,6 +164,14 @@ namespace Assets.Scripts.Actors
         #region Methods
         private void Start()
         {
+            _commandToDirection = new Dictionary<Commands, Vector2>
+            {
+                {Commands.Up, Vector2.up },
+                {Commands.Down, Vector2.down },
+                {Commands.Left, Vector2.left },
+                {Commands.Right, Vector2.right }
+            };
+
             Weapon = _mainWeaponObject?.GetComponent<Weapon>();
             if(_secondaryWeaponObject != null)
             {
@@ -177,7 +184,8 @@ namespace Assets.Scripts.Actors
                 _rigidbody2D = GetComponent<Rigidbody2D>();
             }
             _actorDisplayer = transform.GetChild(0).gameObject;
-
+            _actorDisplayerController = _actorDisplayer.GetComponent<ActorDisplayerController>();
+            _actorDisplayerController.SetAnimationState(false);
             _lineRenderer = _actorDisplayer.GetComponent<LineRenderer>();
             _lineRenderer.SetPosition(0, transform.position);
             _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
@@ -189,36 +197,48 @@ namespace Assets.Scripts.Actors
             }
         }
 
-        public bool GetCommand(Commands command)
+        public bool GetCommand(Commands command, object param = null)
         {
             if(!_isAlive || !_isSelected)
             {
                 return false;
             }
-            var spd = _speed * Time.deltaTime;
             _lineRenderer.SetPosition(0, Weapon.gameObject.transform.position);
             switch (command)
             {
                 case Commands.Up:
-                    transform.Translate(Vector2.up * spd);
-                    break;
                 case Commands.Down:
-                    transform.Translate(Vector2.down * spd);
-                    break;
                 case Commands.Right:
-                    transform.Translate(Vector2.right * spd);
-                    break;
                 case Commands.Left:
-                    transform.Translate(Vector2.left * spd);
+                    GetMoveCommand(command);
                     break;
                 case Commands.Shoot:
-                    Weapon.Shoot(_actorDisplayer.transform.localRotation);
+                    FireWeapon();
                     break;
                 case Commands.SwapWeapons:
                     SwapWeapons();
                     break;
+                case Commands.Aim:
+                    LookAt((Vector2)param);
+                    break;
             }
             return true;
+        }
+
+        private void GetMoveCommand(Commands command)
+        {
+            var spd = _speed * Time.deltaTime;
+            _actorDisplayerController.SetAnimationState(true);
+            _isAnimatingFrame = true;
+            transform.Translate(_commandToDirection[command] * spd);
+        }
+
+        private void FireWeapon()
+        {
+            if (!_isSwapingWeapons)
+            {
+                Weapon.Shoot(_actorDisplayer.transform.localRotation);
+            }
         }
 
         public void LookAt(Vector2 position)
@@ -230,6 +250,16 @@ namespace Assets.Scripts.Actors
             _actorDisplayer.transform.localRotation = Quaternion.Euler(0f, 0f, AngleBetweenTwoPoints(transform.position, position));
             _lineRenderer.SetPosition(0, Weapon.gameObject.transform.position);
             _lineRenderer.SetPosition(1, position);
+        }
+
+        private void KillActor()
+        {
+            _isAlive = false;
+            _isSelected = false;
+            _speed = 0;
+            _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+            GetComponent<BoxCollider2D>().isTrigger = true;
+            _lineRenderer.SetPositions(new Vector3[] { transform.position, transform.position });
         }
 
         public void MoveTowards(Vector2 position)
@@ -248,7 +278,17 @@ namespace Assets.Scripts.Actors
 
         private void Update()
         {
-            if(_actorType != ActorType.NonPlayable || !_isSelected)
+            if (_isSwapingWeapons)
+            {
+                _weaponSwapPassed += Time.deltaTime;
+
+                if (_weaponSwapPassed >= _weaponSwapLength)
+                {
+                    PerformWeaponSwap();
+                }
+            }
+            //_displayerController.SetAnimationState(false);
+            if (_actorType != ActorType.NonPlayable || !_isSelected)
             {
                 return;
             }
@@ -257,6 +297,16 @@ namespace Assets.Scripts.Actors
             {
                 _lineRenderer.SetPosition(0, transform.position);
                 transform.position = Vector2.MoveTowards(transform.position, _targetPosition, spd);
+            }
+
+        }
+
+        private void LateUpdate()
+        {
+            if (_isAnimatingFrame)
+            {
+                _isAnimatingFrame = false;
+                _actorDisplayerController.SetAnimationState(false);
             }
         }
 
@@ -277,7 +327,16 @@ namespace Assets.Scripts.Actors
 
         public void SwapWeapons()
         {
-            if(_secondaryWeaponObject == null)
+            if (_isSwapingWeapons)
+            {
+                return;
+            }
+            _isSwapingWeapons = true;
+        }
+
+        private void PerformWeaponSwap()
+        {
+            if (_secondaryWeaponObject == null)
             {
                 return;
             }
@@ -294,7 +353,8 @@ namespace Assets.Scripts.Actors
                 _secondaryWeaponObject.SetActive(true);
                 Weapon = _secondaryWeaponObject.GetComponent<Weapon>();
             }
-            Debug.Log(Weapon.Name);
+            _isSwapingWeapons = false;
+            _weaponSwapPassed = 0;
         }
     }
     #endregion

@@ -29,6 +29,9 @@ namespace Assets.Scripts.Controllers
         private KeyCode _swapWeaponsCode;
 
         [SerializeField]
+        private KeyCode _aimWeaponButton;
+
+        [SerializeField]
         private CameraController _cameraController;
 
         private Dictionary<KeyCode, Commands> _keyCodesToCommands;
@@ -54,9 +57,15 @@ namespace Assets.Scripts.Controllers
         {
             var selected = _playableActors.Where(x => x.IsSelected).ToList();
 
-            if (selected.Count() > 0)
+            if (selected.Count() > 0 && Input.GetKey(_aimWeaponButton))
             {
                 selected.ForEach(x => x.LookAt(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+
+                if (Input.GetMouseButton(0))
+                {
+                    selected.ForEach(x => x.GetCommand(Commands.Shoot));
+                }
+                return;
             }
 
             if (!Input.anyKey)
@@ -84,11 +93,6 @@ namespace Assets.Scripts.Controllers
             if (pressedCommand != KeyCode.None)
             {
                 selected.ForEach(x => x.GetCommand(_keyCodesToCommands[pressedCommand]));
-            }
-
-            if (Input.GetMouseButton(0))
-            {
-                selected.ForEach(x => x.GetCommand(Commands.Shoot));
             }
         }
         #endregion
