@@ -8,6 +8,8 @@ namespace Assets.Scripts.Actors
         private Animator _animator;
         private float _defaultSpeed;
 
+        public bool IsAnimating => _animator.speed > 0; 
+
         private void Start()
         {
             _animator = GetComponent<Animator>();

@@ -247,6 +247,7 @@ namespace Assets.Scripts.Actors
             _isSelected = false;
             _speed = 0;
             _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+            _actorDisplayerController.SetAnimationState(false);
             GetComponent<BoxCollider2D>().isTrigger = true;
         }
 
@@ -284,6 +285,14 @@ namespace Assets.Scripts.Actors
             if(_targetPosition != null)
             {
                 transform.position = Vector2.MoveTowards(transform.position, _targetPosition, spd);
+
+                if (!_actorDisplayerController.IsAnimating)
+                {
+                    _actorDisplayerController.SetAnimationState(true);
+                }
+            } else if (_actorDisplayerController.IsAnimating)
+            {
+                _actorDisplayerController.SetAnimationState(false);
             }
 
         }
