@@ -282,7 +282,7 @@ namespace Assets.Scripts.Actors
                 return;
             }
             var spd = Time.deltaTime * _speed;
-            if(_targetPosition != null)
+            if(_targetPosition != Vector2.zero)
             {
                 transform.position = Vector2.MoveTowards(transform.position, _targetPosition, spd);
 

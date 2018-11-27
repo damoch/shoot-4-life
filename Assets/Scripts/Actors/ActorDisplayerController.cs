@@ -10,16 +10,25 @@ namespace Assets.Scripts.Actors
 
         public bool IsAnimating => _animator.speed > 0; 
 
-        private void Start()
+        private void Awake()
         {
-            _animator = GetComponent<Animator>();
-            _defaultSpeed = _animator.speed;
-
+            Initialize();
         }
 
         public void SetAnimationState(bool isOn)
         {
+            if(_animator == null)
+            {
+                Initialize();
+            }
             _animator.speed = isOn ? _defaultSpeed : 0f;
+        }
+
+        private void Initialize()
+        {
+            _animator = GetComponent<Animator>();
+            _animator.StartPlayback();
+            _defaultSpeed = _animator.speed;
         }
     }
 }

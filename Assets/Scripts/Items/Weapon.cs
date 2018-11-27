@@ -139,8 +139,9 @@ namespace Assets.Scripts.Items
             if(_hasRecoil && _currentRecoilValue > 0)
             {
                 _recoilCooldownTimer += Time.deltaTime;
+                _currentRecoilValue -= (_recoilCooldownTimer / _decreaseRecoilTime) * _currentRecoilValue;
 
-                if(_recoilCooldownTimer >= _decreaseRecoilTime)
+                if (_recoilCooldownTimer >= _decreaseRecoilTime)
                 {
                     _currentRecoilValue = 0;
                 }

@@ -19,10 +19,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4556292811668692}
+  - component: {fileID: 114381682870681636}
   - component: {fileID: 212823352711369902}
   - component: {fileID: 95543177454010874}
   - component: {fileID: 61278963321825136}
-  - component: {fileID: 114381682870681636}
   m_Layer: 0
   m_Name: ActorDisplayer
   m_TagString: Untagged
@@ -72,9 +72,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4855750801439438}
-  - component: {fileID: 114229264995759700}
   - component: {fileID: 50994731237823390}
   - component: {fileID: 61906264912128218}
+  - component: {fileID: 114229264995759700}
   m_Layer: 0
   m_Name: PlayableActor
   m_TagString: Untagged

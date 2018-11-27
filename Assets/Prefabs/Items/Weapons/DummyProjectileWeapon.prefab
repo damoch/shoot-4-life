@@ -62,8 +62,8 @@ MonoBehaviour:
   _magazineCapacity: 30
   _reloadLength: 5
   _hasRecoil: 0
-  _recoilValueEveryShoot: 1.5
-  _decreaseRecoilTime: 1
+  _recoilValueEveryShoot: 3
+  _decreaseRecoilTime: 2
 --- !u!212 &212962735539609518
 SpriteRenderer:
   m_ObjectHideFlags: 1

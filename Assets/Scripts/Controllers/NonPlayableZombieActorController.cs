@@ -20,6 +20,7 @@ namespace Assets.Scripts.Controllers
         private void Start()
         {
             _actor = GetComponent<Actor>();
+            _actor.MoveTowards(Vector2.zero);
             _actor.Team = _team;
         }
 
@@ -35,7 +36,17 @@ namespace Assets.Scripts.Controllers
                 _actor.IsSelected = true;
             }
 
-            if (_target == null) return;
+            if (_target == null)
+            {
+                return;
+            }
+
+            if (!_target.IsAlive)
+            {
+                _target = null;
+                _actor.MoveTowards(Vector2.zero);
+                return;
+            }
 
             _actor.LookAt(_target.transform.position);
             _actor.MoveTowards(_target.transform.position);
