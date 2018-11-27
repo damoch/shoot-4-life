@@ -51,7 +51,6 @@ namespace Assets.Scripts.Actors
 
         private GameObject _actorDisplayer;
         private Rigidbody2D _rigidbody2D;
-        private LineRenderer _lineRenderer;
         private Armor _armor;
         private float _weaponSwapPassed;
         private bool _isSwapingWeapons;
@@ -81,11 +80,6 @@ namespace Assets.Scripts.Actors
                 }
                 _rigidbody2D.bodyType = _isSelected ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
 
-                if(_lineRenderer != null)
-                {
-                    _lineRenderer.SetPosition(1, transform.position);
-                    _lineRenderer.SetPosition(0, transform.position);
-                }
                 if(_actorDisplayer != null)
                 {
                     _actorDisplayer.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -186,8 +180,6 @@ namespace Assets.Scripts.Actors
             _actorDisplayer = transform.GetChild(0).gameObject;
             _actorDisplayerController = _actorDisplayer.GetComponent<ActorDisplayerController>();
             _actorDisplayerController.SetAnimationState(false);
-            _lineRenderer = _actorDisplayer.GetComponent<LineRenderer>();
-            _lineRenderer.SetPosition(0, transform.position);
             _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
             _isSelected = false;
 
@@ -203,7 +195,6 @@ namespace Assets.Scripts.Actors
             {
                 return false;
             }
-            _lineRenderer.SetPosition(0, Weapon.gameObject.transform.position);
             switch (command)
             {
                 case Commands.Up:
@@ -248,8 +239,6 @@ namespace Assets.Scripts.Actors
                 return;
             }
             _actorDisplayer.transform.localRotation = Quaternion.Euler(0f, 0f, AngleBetweenTwoPoints(transform.position, position));
-            _lineRenderer.SetPosition(0, Weapon.gameObject.transform.position);
-            _lineRenderer.SetPosition(1, position);
         }
 
         private void KillActor()
@@ -259,7 +248,6 @@ namespace Assets.Scripts.Actors
             _speed = 0;
             _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
             GetComponent<BoxCollider2D>().isTrigger = true;
-            _lineRenderer.SetPositions(new Vector3[] { transform.position, transform.position });
         }
 
         public void MoveTowards(Vector2 position)
@@ -295,7 +283,6 @@ namespace Assets.Scripts.Actors
             var spd = Time.deltaTime * _speed;
             if(_targetPosition != null)
             {
-                _lineRenderer.SetPosition(0, transform.position);
                 transform.position = Vector2.MoveTowards(transform.position, _targetPosition, spd);
             }
 
