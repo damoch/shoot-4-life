@@ -17,6 +17,8 @@ namespace Assets.Scripts.Controllers
 
         private Actor _target;
 
+        public Team Team { get => _team; }
+
         private void Start()
         {
             _actor = GetComponent<Actor>();
@@ -62,6 +64,14 @@ namespace Assets.Scripts.Controllers
             if(actor.Team != _team)
             {
                 _target = actor;
+            }
+        }
+
+        internal void NotifyAboutActorLeftTheRoom(Actor actor)
+        {
+            if(_target == actor)
+            {
+                _target = null;
             }
         }
     }

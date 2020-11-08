@@ -53,7 +53,7 @@ namespace Assets.Scripts.Controllers
             };
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             var selected = _playableActors.Where(x => x.IsSelected).ToList();
 
