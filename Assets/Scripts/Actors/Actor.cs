@@ -284,7 +284,8 @@ namespace Assets.Scripts.Actors
             var spd = Time.deltaTime * _speed;
             if(_targetPosition != Vector2.zero)
             {
-                transform.position = Vector2.MoveTowards(transform.position, _targetPosition, spd);//TODO: use another method for move, because this one makes actor clip through walls
+                var move = Vector2.MoveTowards(transform.position, _targetPosition, spd);//TODO: use another method for move, because this one makes actor clip through walls
+                _rigidbody2D.MovePosition(move);
 
                 if (!_actorDisplayerController.IsAnimating)
                 {
