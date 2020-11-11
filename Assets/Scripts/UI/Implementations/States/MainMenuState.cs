@@ -11,5 +11,10 @@ namespace Assets.Scripts.UI.Implementations.States
             //temporary
             SceneManager.LoadScene("test");
         }
+
+        public void ExitGameButtonClicked()
+        {
+            Application.Quit();
+        }
     }
 }
