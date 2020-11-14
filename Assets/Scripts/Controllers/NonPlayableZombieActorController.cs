@@ -3,6 +3,7 @@ using Assets.Scripts.Enums;
 using UnityEngine;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Controllers
 {
@@ -16,6 +17,7 @@ namespace Assets.Scripts.Controllers
         private Team _team;
 
         private Actor _target;
+        private List<Actor> _potentialTargets;
 
         public Team Team { get => _team; }
 
@@ -24,6 +26,7 @@ namespace Assets.Scripts.Controllers
             _actor = GetComponent<Actor>();
             _actor.MoveTowards(Vector2.zero);
             _actor.Team = _team;
+            _potentialTargets = new List<Actor>();
         }
 
         private void Update()
@@ -40,14 +43,20 @@ namespace Assets.Scripts.Controllers
 
             if (_target == null)
             {
-                return;
+                if(!FindNewTarget())
+                {
+                    return;
+
+                }
             }
 
             if (!_target.IsAlive)
             {
-                _target = null;
-                _actor.MoveTowards(Vector2.zero);
-                return;
+                if(!FindNewTarget())
+                {
+                    _actor.MoveTowards(Vector2.zero);
+                    return;
+                }
             }
 
             _actor.LookAt(_target.transform.position);
@@ -63,7 +72,15 @@ namespace Assets.Scripts.Controllers
         {
             if(actor.Team != _team)
             {
-                _target = actor;
+                if(_target == null) 
+                {
+                    _target = actor;
+                    return;
+                }
+                if (!_potentialTargets.Contains(actor))
+                {
+                    _potentialTargets.Add(actor);
+                }
             }
         }
 
@@ -71,8 +88,20 @@ namespace Assets.Scripts.Controllers
         {
             if(_target == actor)
             {
-                _target = null;
+                FindNewTarget();
             }
+        }
+
+        private bool FindNewTarget()
+        {
+            _target = _potentialTargets.FirstOrDefault(x => x.IsAlive);
+
+            if(_target == null)
+            {
+                _potentialTargets.Clear();
+                return false;
+            }
+            return true;            
         }
     }
 }

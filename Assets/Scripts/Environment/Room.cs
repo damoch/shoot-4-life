@@ -40,12 +40,15 @@ namespace Assets.Scripts.Environment
             var zombieController = collision.gameObject.transform.parent?.GetComponent<NonPlayableZombieActorController>();
             if(zombieController != null)
             {
-                var enemy = _actorsInRoom.FirstOrDefault(x => x.Team != zombieController.Team);//zombie will attack anyone, who is not in their team
-                if(enemy == null)
+                var enemies = _actorsInRoom.Where(x => x.Team != zombieController.Team && x.IsAlive).ToList();//zombie will attack anyone, who is not in their team
+                if(enemies.Count == 0)
                 {
                     return;
                 }
-                zombieController.NotifyAboutNewActorInTheRoom(enemy);
+                foreach (var enemy in enemies)
+                {
+                    zombieController.NotifyAboutNewActorInTheRoom(enemy);                    
+                }
             }
         }
 
