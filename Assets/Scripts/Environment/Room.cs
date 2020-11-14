@@ -13,6 +13,7 @@ namespace Assets.Scripts.Environment
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            Debug.Log("agent enter");
             var actor = collision.gameObject.transform.parent?.GetComponent<Actor>();
             if(actor != null)
             {

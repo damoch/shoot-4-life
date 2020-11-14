@@ -25,6 +25,7 @@ namespace Assets.Scripts.Runtime
         private static void HandleConsole(string condition, string stackTrace, LogType type)
         {
             //TODO: logging
+            Debug.Break();
         }
     }
 }
