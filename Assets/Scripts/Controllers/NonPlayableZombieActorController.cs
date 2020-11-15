@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using Assets.Scripts.Environment;
 
 namespace Assets.Scripts.Controllers
 {
@@ -46,7 +47,6 @@ namespace Assets.Scripts.Controllers
                 if(!FindNewTarget())
                 {
                     return;
-
                 }
             }
 
@@ -84,8 +84,12 @@ namespace Assets.Scripts.Controllers
             }
         }
 
-        internal void NotifyAboutActorLeftTheRoom(Actor actor)
+        internal void NotifyAboutActorLeftTheRoom(Actor actor, Room leftTo)
         {
+            if(_potentialTargets.Contains(actor))
+            {
+                _potentialTargets.Remove(actor);
+            }
             if(_target == actor)
             {
                 FindNewTarget();

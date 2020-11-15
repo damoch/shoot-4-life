@@ -3,6 +3,7 @@ using Assets.Scripts.Actors;
 using System.Collections.Generic;
 using Assets.Scripts.Controllers;
 using System.Linq;
+using System;
 
 namespace Assets.Scripts.Environment
 {
@@ -11,9 +12,13 @@ namespace Assets.Scripts.Environment
         [SerializeField]
         private List<Actor> _actorsInRoom;
 
+        [SerializeField]
+        private List<Room> _neighbouringRooms;
+
+        private Dictionary<Actor, Room> _actorsLeavingRoomTo;
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            Debug.Log("agent enter");
             var actor = collision.gameObject.transform.parent?.GetComponent<Actor>();
             if(actor != null)
             {
@@ -52,6 +57,30 @@ namespace Assets.Scripts.Environment
             }
         }
 
+        internal void ActorLeftTheExitZone(Actor actor)
+        {
+            if(!_actorsLeavingRoomTo.ContainsKey(actor))
+            {
+                return;
+            }
+            _actorsLeavingRoomTo.Remove(actor);
+        }
+
+        internal void ActorIsLeavingTheRoomTo(Actor actor, Room room)
+        {
+            if(_actorsLeavingRoomTo == null)
+            {
+                _actorsLeavingRoomTo = new Dictionary<Actor, Room>();
+            }
+            if(!_actorsInRoom.Contains(actor))
+            {
+                return;
+            }
+            _actorsLeavingRoomTo.Add(actor, room);
+
+            Debug.Log($"{actor.name} is leaving the room");
+        }
+
         private void OnTriggerExit2D(Collider2D collision)
         {
             var actor = collision.gameObject.transform.parent?.GetComponent<Actor>();
@@ -62,6 +91,15 @@ namespace Assets.Scripts.Environment
                    _actorsInRoom = new List<Actor>();
                    return;
                }
+               Room actorsNewRoom = null;
+                if(!_actorsLeavingRoomTo.ContainsKey(actor))
+                {
+                    Debug.LogWarning($"Something is wrong, {actor.gameObject.name} should be in leaving actors list... IDK fix it");
+                }
+                else
+                {
+                    actorsNewRoom = _actorsLeavingRoomTo[actor];
+                }
                //_actorsInRoom.ForEach(x => x.NewActorInCurrentRoom(actor));
                foreach (var act in _actorsInRoom)
                {
@@ -71,9 +109,15 @@ namespace Assets.Scripts.Environment
                    }
 
                    var actorController = act.gameObject.GetComponent<NonPlayableZombieActorController>();
-                   actorController.NotifyAboutActorLeftTheRoom(actor);
+                   actorController.NotifyAboutActorLeftTheRoom(actor, actorsNewRoom);
+
+                   Debug.Log($"Actor {actor.gameObject.name} left to {actorsNewRoom?.gameObject.name}");
                }
 
+               if(_actorsLeavingRoomTo.ContainsKey(actor))
+               {
+                    _actorsLeavingRoomTo.Remove(actor);
+               }
                _actorsInRoom.Remove(actor);
                return;
             }
