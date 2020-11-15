@@ -22,14 +22,5 @@ namespace Assets.Scripts.Environment
                 _currentRoom.ActorIsLeavingTheRoomTo(actor, _leadsTo);
             }
         }
-
-        private void OnTriggerExit2D(Collider2D col)
-        {
-            var actor = col.gameObject.GetComponentInParent<Actor>();
-            if (actor)
-            {
-                _currentRoom.ActorLeftTheExitZone(actor);
-            }
-        }
     }
 }

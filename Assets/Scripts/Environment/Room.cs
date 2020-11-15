@@ -57,15 +57,6 @@ namespace Assets.Scripts.Environment
             }
         }
 
-        internal void ActorLeftTheExitZone(Actor actor)
-        {
-            if(!_actorsLeavingRoomTo.ContainsKey(actor))
-            {
-                return;
-            }
-            _actorsLeavingRoomTo.Remove(actor);
-        }
-
         internal void ActorIsLeavingTheRoomTo(Actor actor, Room room)
         {
             if(_actorsLeavingRoomTo == null)
@@ -74,6 +65,11 @@ namespace Assets.Scripts.Environment
             }
             if(!_actorsInRoom.Contains(actor))
             {
+                return;
+            }
+            if(_actorsLeavingRoomTo.ContainsKey(actor)){
+                _actorsLeavingRoomTo[actor] = room;
+                Debug.Log($"{actor.name} is leaving the room");
                 return;
             }
             _actorsLeavingRoomTo.Add(actor, room);
@@ -86,13 +82,15 @@ namespace Assets.Scripts.Environment
             var actor = collision.gameObject.transform.parent?.GetComponent<Actor>();
             if (actor != null)
             {
-               if (_actorsInRoom == null)
-               {
-                   _actorsInRoom = new List<Actor>();
-                   return;
-               }
-               Room actorsNewRoom = null;
-                if(!_actorsLeavingRoomTo.ContainsKey(actor))
+                Debug.Break();
+                //https://answers.unity.com/questions/410711/trigger-in-child-object-calls-ontriggerenter-in-pa.html
+                if (_actorsInRoom == null)
+                {
+                    _actorsInRoom = new List<Actor>();
+                    return;
+                }
+                Room actorsNewRoom = null;
+                if (!_actorsLeavingRoomTo.ContainsKey(actor))
                 {
                     Debug.LogWarning($"Something is wrong, {actor.gameObject.name} should be in leaving actors list... IDK fix it");
                 }
@@ -100,26 +98,25 @@ namespace Assets.Scripts.Environment
                 {
                     actorsNewRoom = _actorsLeavingRoomTo[actor];
                 }
-               //_actorsInRoom.ForEach(x => x.NewActorInCurrentRoom(actor));
-               foreach (var act in _actorsInRoom)
-               {
-                   if (act.ActorType == Enums.ActorType.Playable)
-                   {
-                       continue;
-                   }
+                foreach (var act in _actorsInRoom)
+                {
+                    if (act.ActorType == Enums.ActorType.Playable)
+                    {
+                        continue;
+                    }
 
-                   var actorController = act.gameObject.GetComponent<NonPlayableZombieActorController>();
-                   actorController.NotifyAboutActorLeftTheRoom(actor, actorsNewRoom);
+                    var actorController = act.gameObject.GetComponent<NonPlayableZombieActorController>();
+                    actorController.NotifyAboutActorLeftTheRoom(actor, actorsNewRoom);
 
-                   Debug.Log($"Actor {actor.gameObject.name} left to {actorsNewRoom?.gameObject.name}");
-               }
+                    Debug.Log($"Actor {actor.gameObject.name} left to {actorsNewRoom?.gameObject.name}");
+                }
 
-               if(_actorsLeavingRoomTo.ContainsKey(actor))
-               {
+                if (_actorsLeavingRoomTo.ContainsKey(actor))
+                {
                     _actorsLeavingRoomTo.Remove(actor);
-               }
-               _actorsInRoom.Remove(actor);
-               return;
+                }
+                _actorsInRoom.Remove(actor);
+                return;
             }
         }
     }
