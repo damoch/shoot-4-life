@@ -27,7 +27,12 @@ namespace Assets.Scripts.Environment
                     _actorsInRoom = new List<Actor> { actor };
                     return;
                 }
-                //_actorsInRoom.ForEach(x => x.NewActorInCurrentRoom(actor));
+                if(_actorsInRoom.Contains(actor))
+                {
+                    Debug.LogError($"??? ok, but like, you {actor.gameObject.name} already are in {gameObject.name}?");
+                    return;
+                }
+
                 foreach(var act in _actorsInRoom)
                 {
                     if(act.ActorType == Enums.ActorType.Playable)
@@ -40,6 +45,7 @@ namespace Assets.Scripts.Environment
                 }
 
                 _actorsInRoom.Add(actor);
+                Debug.Log($"{actor.gameObject.name} has entered room {gameObject.name}");
             }
 
             var zombieController = collision.gameObject.transform.parent?.GetComponent<NonPlayableZombieActorController>();
@@ -69,12 +75,12 @@ namespace Assets.Scripts.Environment
             }
             if(_actorsLeavingRoomTo.ContainsKey(actor)){
                 _actorsLeavingRoomTo[actor] = room;
-                Debug.Log($"{actor.name} is leaving the room");
+                Debug.Log($"{actor.name} is in the exit zone of {gameObject.name}");
                 return;
             }
             _actorsLeavingRoomTo.Add(actor, room);
 
-            Debug.Log($"{actor.name} is leaving the room");
+            Debug.Log($"{actor.name} is in the exit zone of {gameObject.name}");
         }
 
         private void OnTriggerExit2D(Collider2D collision)
@@ -82,17 +88,23 @@ namespace Assets.Scripts.Environment
             var actor = collision.gameObject.transform.parent?.GetComponent<Actor>();
             if (actor != null)
             {
-                Debug.Break();
                 //https://answers.unity.com/questions/410711/trigger-in-child-object-calls-ontriggerenter-in-pa.html
                 if (_actorsInRoom == null)
                 {
                     _actorsInRoom = new List<Actor>();
                     return;
                 }
+                if(!_actorsInRoom.Contains(actor))
+                {
+                    Debug.LogError($"What in the actual fuck, {actor.gameObject.name} you are NOT in this {gameObject.name}!");
+                    return;
+
+                }
                 Room actorsNewRoom = null;
                 if (!_actorsLeavingRoomTo.ContainsKey(actor))
                 {
-                    Debug.LogWarning($"Something is wrong, {actor.gameObject.name} should be in leaving actors list... IDK fix it");
+                    Debug.LogError($"Something is wrong, {actor.gameObject.name} should be in leaving {gameObject.name} actors list... IDK fix it");
+                    return;
                 }
                 else
                 {
@@ -107,15 +119,15 @@ namespace Assets.Scripts.Environment
 
                     var actorController = act.gameObject.GetComponent<NonPlayableZombieActorController>();
                     actorController.NotifyAboutActorLeftTheRoom(actor, actorsNewRoom);
-
-                    Debug.Log($"Actor {actor.gameObject.name} left to {actorsNewRoom?.gameObject.name}");
                 }
+
 
                 if (_actorsLeavingRoomTo.ContainsKey(actor))
                 {
                     _actorsLeavingRoomTo.Remove(actor);
                 }
                 _actorsInRoom.Remove(actor);
+                Debug.Log($"Actor {actor.gameObject.name} left to {actorsNewRoom?.gameObject.name}");
                 return;
             }
         }
