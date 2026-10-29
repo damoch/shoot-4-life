@@ -5,6 +5,9 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 
+# Godot editor/import cache for the modern project
+GodotModern/shoot-4-your-life/.godot/
+
 # Visual Studio cache directory
 .vs/
 

@@ -1,0 +1,90 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/controllers/operation.gd" id="1_operation"]
+[ext_resource type="PackedScene" path="res://scenes/fixed_room.tscn" id="2_room"]
+[ext_resource type="Script" path="res://scripts/controllers/squad_controller.gd" id="3_squad"]
+[ext_resource type="Script" path="res://scripts/controllers/camera_follow.gd" id="4_camera"]
+[ext_resource type="Script" path="res://scripts/ui/combat_hud.gd" id="5_hud"]
+[ext_resource type="PackedScene" path="res://scenes/mercenary.tscn" id="6_mercenary"]
+[ext_resource type="PackedScene" path="res://scenes/zombie.tscn" id="7_zombie"]
+
+[node name="Operation" type="Node2D"]
+script = ExtResource("1_operation")
+
+[node name="FixedRoom" parent="." instance=ExtResource("2_room")]
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="Mercenary01" parent="Actors" instance=ExtResource("6_mercenary")]
+position = Vector2(-300, -120)
+
+[node name="Mercenary02" parent="Actors" instance=ExtResource("6_mercenary")]
+position = Vector2(-300, -40)
+
+[node name="Mercenary03" parent="Actors" instance=ExtResource("6_mercenary")]
+position = Vector2(-300, 40)
+
+[node name="Mercenary04" parent="Actors" instance=ExtResource("6_mercenary")]
+position = Vector2(-300, 120)
+
+[node name="Zombie01" parent="Actors" instance=ExtResource("7_zombie")]
+position = Vector2(340, 0)
+
+[node name="Projectiles" type="Node2D" parent="."]
+
+[node name="SquadController" type="Node2D" parent="."]
+script = ExtResource("3_squad")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, 0)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+script = ExtResource("4_camera")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="CombatHud" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_hud")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/CombatHud"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 20.0
+offset_right = -24.0
+offset_bottom = 160.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/CombatHud/MarginContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="HUD/CombatHud/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.84, 0.43, 1)
+theme_override_font_sizes/font_size = 24
+text = "OPERATION: FIXED ROOM"
+
+[node name="StatusLabel" type="Label" parent="HUD/CombatHud/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Loading combat status..."
+
+[node name="MessageLabel" type="Label" parent="HUD/CombatHud/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.79, 0.84, 1)
+text = "Selected: 0 | WASD move | 1-4 toggle select | LMB fire | R restart"
+
+[node name="RestartButton" type="Button" parent="HUD/CombatHud/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(130, 32)
+layout_mode = 2
+mouse_filter = 0
+text = "Restart operation"

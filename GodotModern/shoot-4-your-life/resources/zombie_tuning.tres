@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CombatTuning" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/combat_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")
+display_name = "Zombie"
+max_health = 100
+armor = 4
+move_speed = 45.0
+projectile_damage = 0
+projectile_speed = 0.0
+fire_cooldown = 0.0
+melee_damage = 50
+melee_cooldown = 3.0
+melee_range = 42.0
