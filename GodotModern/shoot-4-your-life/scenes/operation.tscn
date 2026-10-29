@@ -70,13 +70,13 @@ layout_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.96, 0.84, 0.43, 1)
 theme_override_font_sizes/font_size = 24
-text = "OPERATION: FIXED ROOM"
+text = "OPERATION"
 
 [node name="StatusLabel" type="Label" parent="HUD/CombatHud/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.95, 1, 1)
 theme_override_font_sizes/font_size = 18
-text = "Loading combat status..."
+text = ""
 
 [node name="MessageLabel" type="Label" parent="HUD/CombatHud/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -87,4 +87,4 @@ text = "Selected: 0 | WASD move | 1-4 toggle select | LMB fire | R restart"
 custom_minimum_size = Vector2(130, 32)
 layout_mode = 2
 mouse_filter = 0
-text = "Restart operation"
+text = "Restart"
